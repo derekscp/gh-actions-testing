@@ -33,10 +33,10 @@ jobs:
         uses: jfrog/setup-jfrog-cli@v4.0.2
         id: setup-jfrog-cli
         env:
-          JF_URL: ${{ secrets.JF_URL }}
+          JF_URL: ${{ vars.JF_URL }}
         with:
           oidc-provider-name: derekp-github-oidc
-          oidc-audience: ${{env.OIDC_AUDIENCE}}
+          #oidc-audience: ${{env.OIDC_AUDIENCE}}
       - name: Dockerfile gen
         run: |
           cat << 'EOF' > Dockerfile
