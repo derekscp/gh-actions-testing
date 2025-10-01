@@ -22,7 +22,7 @@ jobs:
       JFROG_CLI_LOG_LEVEL: 'DEBUG'
       BUILD_NAME: "${{ github.workflow }}"
       BUILD_ID: "${{ github.run_number }}"
-      JF_REGISTRY: ${{ secrets.JF_REGISTRY }}
+      JF_REGISTRY: ${{ vars.JF_REGISTRY }}
       IMAGE_NAME: ${{ vars.IMAGE_NAME }}
     steps:
       - name: Checkout
@@ -49,7 +49,7 @@ jobs:
         with:
           username: ${{ steps.setup-jfrog-cli.outputs.oidc-user }}
           password:  ${{steps.setup-jfrog-cli.outputs.oidc-token}}
-          registry: ${{secrets.JF_REGISTRY}}
+          registry: ${{vars.JF_REGISTRY}}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3    
       - name: Simple Build and Push Docker Image
@@ -58,7 +58,7 @@ jobs:
         with:
           context: . 
           push: true
-          tags: ${{ secrets.JF_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
+          tags: ${{ vars.JF_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
       - name: Attest Docker Image and Send to JFrog Evidence
         uses: actions/attest-build-provenance@v3
         with:
