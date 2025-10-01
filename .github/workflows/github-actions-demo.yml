@@ -35,7 +35,7 @@ jobs:
         env:
           JF_URL: ${{ secrets.JF_URL }}
         with:
-          oidc-provider-name: ${{env.OIDC_PROVIDER}}
+          oidc-provider-name: derekp-github-oidc
           oidc-audience: ${{env.OIDC_AUDIENCE}}
       - name: Dockerfile gen
         run: |
