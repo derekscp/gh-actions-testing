@@ -17,8 +17,8 @@ jobs:
       id-token: write
       attestations: write
     env:
-      OIDC_AUDIENCE:  ${{ secrets.OIDC_AUDIENCE }}
-      OIDC_PROVIDER:  ${{ secrets.OIDC_PROVIDER }}
+      OIDC_AUDIENCE: 'jfrog-github'
+      OIDC_PROVIDER: 'derekp-github-oidc'
       JFROG_CLI_LOG_LEVEL: 'DEBUG'
       BUILD_NAME: "${{ github.workflow }}"
       BUILD_ID: "${{ github.run_number }}"
