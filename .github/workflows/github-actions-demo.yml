@@ -49,7 +49,8 @@ jobs:
         with:
           username: ${{ steps.setup-jfrog-cli.outputs.oidc-user }}
           password:  ${{steps.setup-jfrog-cli.outputs.oidc-token}}
-          registry: ${{vars.JF_REGISTRY}}
+          #registry: ${{vars.JF_REGISTRY}}
+          registry: gpgtest-derekp-docker-local.jfrog.io
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3    
       - name: Simple Build and Push Docker Image
