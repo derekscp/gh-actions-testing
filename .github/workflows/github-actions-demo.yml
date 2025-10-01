@@ -63,6 +63,6 @@ jobs:
         uses: actions/attest-build-provenance@v3
         with:
           #subject-name: oci://${{vars.JF_URLBASE}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
-          subject-name: ${{vars.JF_REGISTRY}}/${{env.IMAGE_NAME}}
+          subject-name: oci://${{vars.JF_REGISTRY}}/${{env.IMAGE_NAME}}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
           push-to-registry: true
