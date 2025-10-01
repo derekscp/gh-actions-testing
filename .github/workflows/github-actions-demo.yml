@@ -36,7 +36,7 @@ jobs:
           JF_URL: ${{ vars.JF_URL }}
         with:
           oidc-provider-name: derekp-github-oidc
-          #oidc-audience: ${{env.OIDC_AUDIENCE}}
+          oidc-audience: jfrog-github
       - name: Dockerfile gen
         run: |
           cat << 'EOF' > Dockerfile
