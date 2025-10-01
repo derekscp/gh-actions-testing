@@ -1,0 +1,89 @@
+name: GitHub Actions Demo
+#test3
+#run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+
+permissions:
+  contents: read
+  id-token: write
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    env:
+      OIDC_AUDIENCE:  ${{ secrets.jfrog-github }}
+      OIDC_PROVIDER:  ${{ secrets.derekp-github-oidc }}
+      JFROG_CLI_LOG_LEVEL: 'DEBUG'
+      BUILD_NAME: "${{ github.workflow }}"
+      BUILD_ID: "${{ github.run_number }}"
+      JF_REGISTRY: ${{ secrets.JF_REGISTRY }}
+      IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+    steps:
+      - name: Git OIDC Token
+        id: OIDCtoken
+        shell: bash
+        run: |
+          ID_TOKEN=$(curl -sLS -H "User-Agent: actions/oidc-client" -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+          "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=${{ env.OIDC_AUDIENCE }}" | jq .value | tr -d '"')
+          echo "ID_TOKEN=${ID_TOKEN}" >> $GITHUB_OUTPUT
+      - name: Get Artifactory Access Token 
+        id: Artifactory_Access_Token
+        shell: bash
+        env:
+          ID_TOKEN: ${{ steps.OIDCtoken.outputs.id_token }}
+        run: |
+          JF_ACCESS_TOKEN=$(curl \
+          -X POST \
+          -H "Content-type: application/json" \
+          ${{ secrets.JF_URL }}/access/api/v1/oidc/token \
+          --fail-with-body \
+          -d \
+          "{\"grant_type\": \"urn:ietf:params:oauth:grant-type:token-exchange\", \"subject_token_type\":\"urn:ietf:params:oauth:token-type:id_token\", \"subject_token\": \"${ID_TOKEN}\", \"provider_name\": \"${{ env.OIDC_PROVIDER }}\"}" | jq  -r ".access_token")
+          echo jf-access-token=$JF_ACCESS_TOKEN >> $GITHUB_OUTPUT
+      - name: Checkout
+        uses: actions/checkout@v4
+      #  with:
+      #    token: ${{ secrets.GHTOKEN }}
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4.0.2
+        id: setup-jfrog-cli
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+        with:
+          oidc-provider-name: derekp-github-oidc 
+          oidc-audience: jfrog-github
+      - name: Check Access Token
+        run: |
+          cat << 'EOF' > Dockerfile
+          FROM alpine:latest
+          CMD echo "Hello, Docker World!"
+          EOF
+          cat Dockerfile
+      #- name: Pull Docker image
+      #  run: jf docker pull ${{ vars.JF_URLBASE}}/docker-docker/hello-world
+      - name: Docker login
+        uses: docker/login-action@v3
+        with:
+          username: derek
+          password:  ${{ steps.Artifactory_Access_Token.outputs.jf-access-token  }}
+          registry: ${{secrets.JF_REGISTRY}}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3    
+      - name: Simple Pull and Push Docker Image
+        id: build-and-push
+        uses: docker/build-push-action@v6
+        with:
+          context: . 
+          push: true
+          tags: ${{ secrets.JF_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
+      - name: Attest Docker Image and Send to JFrog Evidence
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-name: oci://${{ env.JF_REGISTRY }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.build-and-push.outputs.digest }}
