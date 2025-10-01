@@ -24,7 +24,7 @@ jobs:
       BUILD_ID: "${{ github.run_number }}"
       JF_REGISTRY: ${{ secrets.JF_REGISTRY }}
       IMAGE_NAME: ${{ vars.IMAGE_NAME }}
-      JF_URL: $ {{ vars.JF_URL }}
+      JF_URL: ${{ vars.JF_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
