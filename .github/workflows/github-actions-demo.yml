@@ -52,7 +52,7 @@ jobs:
           registry: ${{secrets.JF_REGISTRY}}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3    
-      - name: Simple Pull and Push Docker Image
+      - name: Simple Build and Push Docker Image
         id: build-and-push
         uses: docker/build-push-action@v6
         with:
@@ -64,3 +64,4 @@ jobs:
         with:
           subject-name: oci://${{ env.JF_REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
+          push-to-registry: true
