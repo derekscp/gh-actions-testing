@@ -3,9 +3,9 @@ name: GitHub Actions Demo
 #run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 
-permissions:
-  contents: read
-  id-token: write
+#permissions:
+#  contents: read
+#  id-token: write
 
 
 jobs:
@@ -42,7 +42,8 @@ jobs:
         id: Artifactory_Access_Token
         shell: bash
         env:
-          ID_TOKEN: ${{ steps.OIDCtoken.outputs.id_token }}
+          ID_TOKEN: getIDToken()
+          #ID_TOKEN: ${{ steps.OIDCtoken.outputs.id_token }}
         run: |
           JF_ACCESS_TOKEN=$(curl \
           -X POST \
