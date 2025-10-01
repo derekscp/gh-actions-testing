@@ -30,7 +30,7 @@ jobs:
       #  with:
       #    token: ${{ secrets.GHTOKEN }}
       - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v4.0.2
+        uses: jfrog/setup-jfrog-cli@v4.6.1
         id: setup-jfrog-cli
         env:
           JF_URL: ${{ vars.JF_URL }}
