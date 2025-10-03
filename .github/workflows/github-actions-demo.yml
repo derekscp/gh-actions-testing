@@ -60,7 +60,7 @@ jobs:
           context: . 
           push: true
           #tags: ${{ vars.JF_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
-          tags: ${{ vars.JF_REGISTRY }}//${{vars.JF_DOCKER_REPO}}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
+          tags: ${{ vars.JF_REGISTRY }}/${{vars.JF_DOCKER_REPO}}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
       - name: Attest Docker Image and Send to JFrog Evidence
         uses: actions/attest-build-provenance@v3
         with:
