@@ -28,7 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v4.7.0
+        uses: jfrog/setup-jfrog-cli@v4.6.1
         id: setup-jfrog-cli
         env:
           JF_URL: ${{ vars.JF_URL }}
