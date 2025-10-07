@@ -50,7 +50,7 @@ jobs:
         with:
           #username: ${{ steps.setup-jfrog-cli.outputs.oidc-user }}
           #password:  ${{steps.setup-jfrog-cli.outputs.oidc-token}}
-          username: ${secrets.JFROG_USER_TEST}}
+          username: ${{secrets.JFROG_USER_TEST}}
           password:  ${{secrets.JF_ACCESS_TOKEN}}
           registry: ${{vars.JF_REGISTRY}}
           #registry: gpgtest-derekp-docker-local.jfrog.io
