@@ -28,7 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v4.6.1
+        uses: jfrog/setup-jfrog-cli@v4
         id: setup-jfrog-cli
         env:
           JF_URL: ${{ vars.JF_URL }}
@@ -37,6 +37,7 @@ jobs:
           #JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
           #JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
         with:
+          version: 2.80.0
           oidc-provider-name: derekp-github-oidc
           oidc-audience: jfrog-github
       - name: Dockerfile gen
