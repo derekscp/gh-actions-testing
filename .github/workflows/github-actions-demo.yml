@@ -35,10 +35,10 @@ jobs:
           #JF_USER: ${{ secrets.JF_USER }}
           #Basic auth is limited/restricted in using evidence
           #JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-        #with:
-        #  oidc-provider-name: derekp-github-oidc
-        #  oidc-audience: jfrog-github
+          #JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+        with:
+          oidc-provider-name: derekp-github-oidc
+          oidc-audience: jfrog-github
       - name: Dockerfile gen
         run: |
           cat << 'EOF' > Dockerfile
@@ -51,10 +51,10 @@ jobs:
       - name: Docker login
         uses: docker/login-action@v3
         with:
-          #username: ${{ steps.setup-jfrog-cli.outputs.oidc-user }}
-          #password:  ${{steps.setup-jfrog-cli.outputs.oidc-token}}
-          username: ${{secrets.JF_USER}}
-          password:  ${{secrets.JF_ACCESS_TOKEN}}
+          username: ${{ steps.setup-jfrog-cli.outputs.oidc-user }}
+          password:  ${{steps.setup-jfrog-cli.outputs.oidc-token}}
+          #username: ${{secrets.JF_USER}}
+          #password:  ${{secrets.JF_ACCESS_TOKEN}}
           registry: ${{vars.JF_REGISTRY}}
           #registry: gpgtest-derekp-docker-local.jfrog.io
       - name: Set up Docker Buildx
@@ -71,7 +71,7 @@ jobs:
         uses: actions/attest-build-provenance@v3
         with:
           #subject-name: oci://${{vars.JF_REGISTRY}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
-          subject-name: ${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
+          subject-name: oci://${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
           #subject-name: ${{vars.JF_REGISTRY}}/${{env.IMAGE_NAME}}
           #subject-name: oci://derekp-docker-local/${{env.IMAGE_NAME}}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
