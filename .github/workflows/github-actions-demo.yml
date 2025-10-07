@@ -71,8 +71,8 @@ jobs:
       - name: Attest Docker Image and Send to JFrog Evidence
         uses: actions/attest-build-provenance@v3
         with:
-          #subject-name: oci://${{vars.JF_REGISTRY}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
-          subject-name: ${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
+          subject-name: oci://${{vars.JF_REGISTRY}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
+          #subject-name: ${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
           #subject-name: ${{vars.JF_REGISTRY}}/${{env.IMAGE_NAME}}
           #subject-name: oci://derekp-docker-local/${{env.IMAGE_NAME}}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
