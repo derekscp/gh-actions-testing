@@ -51,6 +51,7 @@ jobs:
         run: |
           jf mvnc --repo-resolve-releases=${{ vars.MVN_REPO_RESOLVE_RELEASE }} --repo-resolve-snapshots=${{ vars.MVN_REPO_RESOLVE_SNAPSHOTS }} --repo-deploy-releases=${{ vars.MVN_REPO_DEPLOY_RELEASE }} --repo-deploy-snapshots=${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}
           jf mvn --version
+          ls -al
       #- name: Maven file download
       #  shell: bash
       #  run: |
