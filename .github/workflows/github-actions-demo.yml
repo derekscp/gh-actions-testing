@@ -47,8 +47,10 @@ jobs:
           distribution: temurin
       - name: JF CLI maven config
         shell: bash
+        #--server-id-resolve=setup-jfrog-cli-server
         run: |
-          mvn --version
+          jf mvn --version
+          jf mvnc --repo-resolve-releases=${{ vars.MVN_REPO_RESOLVE_RELEASE }} --repo-resolve-snapshots=${{ vars.MVN_REPO_RESOLVE_SNAPSHOTS }} --repo-deploy-releases=${{ vars.MVN_REPO_DEPLOY_RELEASE }} --repo-deploy-snapshots=${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}
       
       #- name: Maven file download
       #  shell: bash
