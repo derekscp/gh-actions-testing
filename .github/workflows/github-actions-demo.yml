@@ -63,7 +63,9 @@ jobs:
         with:
           #Error: Error: Only one of subject-path, subject-digest, or subject-checksums may be provided
           #subject-path: 'simple-mvn-test/target/simple-maven-project-1.0-SNAPSHOT.jar'
-          subject-name: ${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}/simple-maven-project-1.0-SNAPSHOT.jar 
+          #subject-name: ${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}/simple-maven-project-1.0-SNAPSHOT.jar 
+          #TODO: find a neater way to do this. problem is maven logs seem to change in structure depending but let's see if this works when used explicitly
+          subject-name: ${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}/com/example/simple-maven-project/1.0-SNAPSHOT/simple-maven-project-1.0-SNAPSHOT.jar
           subject-digest: ${{ steps.create_artifact_digest.outputs.artifact_digest }}
           
       #- name: Maven file download
