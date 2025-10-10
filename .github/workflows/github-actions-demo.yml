@@ -61,7 +61,8 @@ jobs:
       - name: Generate artifact provenance attestation
         uses: actions/attest-build-provenance@v3
         with:
-          subject-path: 'simple-mvn-test/target/simple-maven-project-1.0-SNAPSHOT.jar'
+          #Error: Error: Only one of subject-path, subject-digest, or subject-checksums may be provided
+          #subject-path: 'simple-mvn-test/target/simple-maven-project-1.0-SNAPSHOT.jar'
           subject-name: ${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}/simple-maven-project-1.0-SNAPSHOT.jar 
           subject-digest: ${{ steps.create_artifact_digest.outputs.artifact_digest }}
           
