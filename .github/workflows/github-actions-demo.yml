@@ -52,6 +52,12 @@ jobs:
           jf mvnc --repo-resolve-releases=${{ vars.MVN_REPO_RESOLVE_RELEASE }} --repo-resolve-snapshots=${{ vars.MVN_REPO_RESOLVE_SNAPSHOTS }} --repo-deploy-releases=${{ vars.MVN_REPO_DEPLOY_RELEASE }} --repo-deploy-snapshots=${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}
           jf mvn --version
           ls -al
+          jf mvn clean deploy --file simple-mvn-test/pom.xml
+      - name: Generate artifact provenance attestation
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: 'target/simple-maven-project-1.0-SNAPSHOT.jar'
+          subject-name: ${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}/simple-maven-project-1.0-SNAPSHOT.jar 
       #- name: Maven file download
       #  shell: bash
       #  run: |
