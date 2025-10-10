@@ -56,7 +56,7 @@ jobs:
       - name: Create artifact digest
         id: create_artifact_digest
         run: |
-          ARTIFACT_DIGEST=$(sha256sum simple-mvn-test/target/simple-maven-project-1.0-SNAPSHOT.jar | awk '{print "sha256:"$1}')
+          ARTIFACT_DIGEST=$(sha256sum simple-mvn-test/target/simple-maven-project-1.0-1.jar | awk '{print "sha256:"$1}')
           echo "artifact_digest=$ARTIFACT_DIGEST" >> $GITHUB_OUTPUT    
       - name: Generate artifact provenance attestation
         uses: actions/attest-build-provenance@v3
@@ -65,7 +65,7 @@ jobs:
           #subject-path: 'simple-mvn-test/target/simple-maven-project-1.0-SNAPSHOT.jar'
           #subject-name: ${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}/simple-maven-project-1.0-SNAPSHOT.jar 
           #TODO: find a neater way to do this. problem is maven logs seem to change in structure depending but let's see if this works when used explicitly
-          subject-name: ${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}/com/example/simple-maven-project/1.0-SNAPSHOT/simple-maven-project-1.0-SNAPSHOT.jar
+          subject-name: ${{ vars.MVN_REPO_DEPLOY_RELEASE }}/com/example/simple-maven-project/1.0-1/simple-maven-project-1.0-1.jar
           subject-digest: ${{ steps.create_artifact_digest.outputs.artifact_digest }}
           
       #- name: Maven file download
