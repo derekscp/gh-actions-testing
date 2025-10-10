@@ -51,17 +51,17 @@ jobs:
         run: |
           jf mvnc --repo-resolve-releases=${{ vars.MVN_REPO_RESOLVE_RELEASE }} --repo-resolve-snapshots=${{ vars.MVN_REPO_RESOLVE_SNAPSHOTS }} --repo-deploy-releases=${{ vars.MVN_REPO_DEPLOY_RELEASE }} --repo-deploy-snapshots=${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}
           jf mvn --version
-          ls -al
           jf mvn clean deploy --file simple-mvn-test/pom.xml
+          ls -al
       - name: Create artifact digest
         id: create_artifact_digest
         run: |
-          ARTIFACT_DIGEST=$(sha256sum target/simple-maven-project-1.0-SNAPSHOT.jar | awk '{print "sha256:"$1}')
+          ARTIFACT_DIGEST=$(sha256sum simple-mvn-test/target/simple-maven-project-1.0-SNAPSHOT.jar | awk '{print "sha256:"$1}')
           echo "artifact_digest=$ARTIFACT_DIGEST" >> $GITHUB_OUTPUT    
       - name: Generate artifact provenance attestation
         uses: actions/attest-build-provenance@v3
         with:
-          subject-path: 'target/simple-maven-project-1.0-SNAPSHOT.jar'
+          subject-path: 'simple-mvn-test/target/simple-maven-project-1.0-SNAPSHOT.jar'
           subject-name: ${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}/simple-maven-project-1.0-SNAPSHOT.jar 
           subject-digest: ${{ steps.create_artifact_digest.outputs.artifact_digest }}
           
