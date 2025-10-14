@@ -123,4 +123,4 @@ jobs:
           #subject-name: ${{vars.JF_REGISTRY}}/${{env.IMAGE_NAME}}
           #subject-name: oci://derekp-docker-local/${{env.IMAGE_NAME}}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
-          push-to-registry: true
+          #push-to-registry: true
