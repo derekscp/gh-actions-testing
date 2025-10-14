@@ -40,33 +40,33 @@ jobs:
           oidc-provider-name: derekp-github-oidc
           oidc-audience: jfrog-github
 #Simple Maven test 
-      - name: Set up JDK 11
-        uses: actions/setup-java@v5.0.0
-        with:
-          java-version: 11
-          distribution: temurin
-      - name: JF CLI maven config
-        shell: bash
-        #--server-id-resolve=setup-jfrog-cli-server
-        run: |
-          jf mvnc --repo-resolve-releases=${{ vars.MVN_REPO_RESOLVE_RELEASE }} --repo-resolve-snapshots=${{ vars.MVN_REPO_RESOLVE_SNAPSHOTS }} --repo-deploy-releases=${{ vars.MVN_REPO_DEPLOY_RELEASE }} --repo-deploy-snapshots=${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}
-          jf mvn --version
-          jf mvn clean deploy --file simple-mvn-test/pom.xml
-          ls -al
-      - name: Create artifact digest
-        id: create_artifact_digest
-        run: |
-          ARTIFACT_DIGEST=$(sha256sum simple-mvn-test/target/simple-maven-project-1.0-1.jar | awk '{print "sha256:"$1}')
-          echo "artifact_digest=$ARTIFACT_DIGEST" >> $GITHUB_OUTPUT    
-      - name: Generate artifact provenance attestation
-        uses: actions/attest-build-provenance@v3
-        with:
-          #Error: Error: Only one of subject-path, subject-digest, or subject-checksums may be provided
-          #subject-path: 'simple-mvn-test/target/simple-maven-project-1.0-SNAPSHOT.jar'
-          #subject-name: ${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}/simple-maven-project-1.0-SNAPSHOT.jar 
-          #TODO: find a neater way to do this. problem is maven logs seem to change in structure depending but let's see if this works when used explicitly
-          subject-name: ${{ vars.MVN_REPO_DEPLOY_RELEASE }}/com/example/simple-maven-project/1.0-1/simple-maven-project-1.0-1.jar
-          subject-digest: ${{ steps.create_artifact_digest.outputs.artifact_digest }}
+#      - name: Set up JDK 11
+#        uses: actions/setup-java@v5.0.0
+#        with:
+#          java-version: 11
+#          distribution: temurin
+#      - name: JF CLI maven config
+#        shell: bash
+#        #--server-id-resolve=setup-jfrog-cli-server
+#        run: |
+#          jf mvnc --repo-resolve-releases=${{ vars.MVN_REPO_RESOLVE_RELEASE }} --repo-resolve-snapshots=${{ vars.MVN_REPO_RESOLVE_SNAPSHOTS }} --repo-deploy-releases=${{ vars.MVN_REPO_DEPLOY_RELEASE }} --repo-deploy-snapshots=${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}
+#          jf mvn --version
+#          jf mvn clean deploy --file simple-mvn-test/pom.xml
+#          ls -al
+#      - name: Create artifact digest
+#        id: create_artifact_digest
+#        run: |
+#          ARTIFACT_DIGEST=$(sha256sum simple-mvn-test/target/simple-maven-project-1.0-1.jar | awk '{print "sha256:"$1}')
+#          echo "artifact_digest=$ARTIFACT_DIGEST" >> $GITHUB_OUTPUT    
+#      - name: Generate artifact provenance attestation
+#        uses: actions/attest-build-provenance@v3
+#        with:
+#          #Error: Error: Only one of subject-path, subject-digest, or subject-checksums may be provided
+#          #subject-path: 'simple-mvn-test/target/simple-maven-project-1.0-SNAPSHOT.jar'
+#          #subject-name: ${{ vars.MVN_REPO_DEPLOY_SNAPSHOTS }}/simple-maven-project-1.0-SNAPSHOT.jar 
+#          #TODO: find a neater way to do this. problem is maven logs seem to change in structure depending but let's see if this works when used explicitly
+#          subject-name: ${{ vars.MVN_REPO_DEPLOY_RELEASE }}/com/example/simple-maven-project/1.0-1/simple-maven-project-1.0-1.jar
+#          subject-digest: ${{ steps.create_artifact_digest.outputs.artifact_digest }}
           
       #- name: Maven file download
       #  shell: bash
@@ -81,44 +81,44 @@ jobs:
       #  with:
       #    subject-name: test-libs-release-local/HTTPClient/HTTPClient/0.3-3/HTTPClient-0.3-3.jar
 #Docker build test
-#      - name: Dockerfile gen
-#        run: |
-#          cat << 'EOF' > Dockerfile
-#          FROM alpine:latest
-#          CMD echo "Hello, Docker World!"
-#          EOF
-#          cat Dockerfile
-#      #- name: Pull Docker image
-#      #  run: jf docker pull ${{ vars.JF_URLBASE}}/docker-docker/hello-world
-#      - name: Docker login
-#        uses: docker/login-action@v3
-#        with:
-#          #username: ${{ steps.setup-jfrog-cli.outputs.oidc-user }}
-#          #password:  ${{steps.setup-jfrog-cli.outputs.oidc-token}}
-#          username: ${{secrets.JF_USER}}
-#          password:  ${{secrets.JF_ACCESS_TOKEN}}
-#          registry: ${{vars.JF_REGISTRY}}
-#          #registry: gpgtest-derekp-docker-local.jfrog.io
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v3    
-#      - name: Simple Build and Push Docker Image
-#        id: build-and-push
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: . 
-#          push: true
-#          #Subdomain test
-#          #tags: ${{ vars.JF_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
-#          #Repository path test
-#          tags: ${{ vars.JF_REGISTRY }}/${{vars.JF_DOCKER_REPO}}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
-#          
-#      - name: Attest Docker Image and Send to JFrog Evidence
-#        uses: actions/attest-build-provenance@v3
-#        with:
-#          subject-name: oci://${{vars.JF_REGISTRY}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
-#          #Attempt with subdomain
-#          #subject-name: oci://${{vars.JF_REGISTRY}}/${{env.IMAGE_NAME}}
-#          #subject-name: ${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
-#          #subject-name: ${{vars.JF_REGISTRY}}/${{env.IMAGE_NAME}}
-#          #subject-name: oci://derekp-docker-local/${{env.IMAGE_NAME}}
-#          subject-digest: ${{ steps.build-and-push.outputs.digest }}
+      - name: Dockerfile gen
+        run: |
+          cat << 'EOF' > Dockerfile
+          FROM alpine:latest
+          CMD echo "Hello, Docker World!"
+          EOF
+          cat Dockerfile
+      #- name: Pull Docker image
+      #  run: jf docker pull ${{ vars.JF_URLBASE}}/docker-docker/hello-world
+      - name: Docker login
+        uses: docker/login-action@v3
+        with:
+          #username: ${{ steps.setup-jfrog-cli.outputs.oidc-user }}
+          #password:  ${{steps.setup-jfrog-cli.outputs.oidc-token}}
+          username: ${{secrets.JF_USER}}
+          password:  ${{secrets.JF_ACCESS_TOKEN}}
+          registry: ${{vars.JF_REGISTRY}}
+          #registry: gpgtest-derekp-docker-local.jfrog.io
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3    
+      - name: Simple Build and Push Docker Image
+        id: build-and-push
+        uses: docker/build-push-action@v6
+        with:
+          context: . 
+          push: true
+          #Subdomain test
+          #tags: ${{ vars.JF_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
+          #Repository path test
+          tags: ${{ vars.JF_REGISTRY }}/${{vars.JF_DOCKER_REPO}}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
+          
+      - name: Attest Docker Image and Send to JFrog Evidence
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-name: oci://${{vars.JF_REGISTRY}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
+          #Attempt with subdomain
+          #subject-name: oci://${{vars.JF_REGISTRY}}/${{env.IMAGE_NAME}}
+          #subject-name: ${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
+          #subject-name: ${{vars.JF_REGISTRY}}/${{env.IMAGE_NAME}}
+          #subject-name: oci://derekp-docker-local/${{env.IMAGE_NAME}}
+          subject-digest: ${{ steps.build-and-push.outputs.digest }}
