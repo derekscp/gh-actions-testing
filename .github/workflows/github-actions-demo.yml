@@ -15,7 +15,8 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: concordia-linux-cpu2-ram7gi
     env:
       OIDC_AUDIENCE: 'jfrog-github'
       OIDC_PROVIDER: 'derekp-github-oidc'
