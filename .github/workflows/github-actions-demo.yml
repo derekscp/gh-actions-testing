@@ -84,7 +84,7 @@ jobs:
       - name: Dockerfile gen
         run: |
           cat << 'EOF' > Dockerfile
-          FROM busybox:latest
+          FROM alpine:latest
           CMD echo "Hello, Docker World!"
           EOF
           cat Dockerfile
