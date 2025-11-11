@@ -112,8 +112,8 @@ jobs:
           #tags: ${{ vars.JF_REGISTRY }}/${{vars.JF_DOCKER_REPO}}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
           tags: ${{ vars.JF_REGISTRY }}/${{vars.JF_DOCKER_REPO}}/${{ env.IMAGE_NAME }}:specialtagtest
           ###Added the following to push docker manifest v2 instead of oci image###
-          #provenance: false
-          #sbom: false
+          provenance: false
+          sbom: false
           ###
       - name: Attest Docker Image and Send to JFrog Evidence
         uses: actions/attest-build-provenance@v3
