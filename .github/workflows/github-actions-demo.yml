@@ -84,7 +84,7 @@ jobs:
       - name: Dockerfile gen
         run: |
           cat << 'EOF' > Dockerfile
-          FROM hello-world:latest
+          FROM alpine:latest
           CMD echo "Hello, Docker World!"
           EOF
           cat Dockerfile
@@ -98,8 +98,8 @@ jobs:
           username: ${{secrets.JF_USER}}
           password:  ${{secrets.JF_ACCESS_TOKEN}}
           registry: ${{vars.JF_REGISTRY}}
-##      - name: Set up Docker Buildx
-##        uses: docker/setup-buildx-action@v3    
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3    
       - name: Simple Build and Push Docker Image
         id: build-and-push
         uses: docker/build-push-action@v6
