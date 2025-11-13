@@ -109,7 +109,7 @@ jobs:
           #Subdomain test
           #tags: ${{ vars.JF_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
           #Repository path test
-          tags: ${{ vars.JF_REGISTRY }}/${{vars.JF_DOCKER_REPO}}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
+          tags: ${{ vars.JF_REGISTRY }}/${{vars.JF_DOCKER_REPO}}/${{ env.IMAGE_NAME }}/test1/test2:${{ github.run_number }}
           #tags: ${{ vars.JF_REGISTRY }}/${{vars.JF_DOCKER_REPO}}/${{ env.IMAGE_NAME }}:specialtagtest
           ###Added the following to push docker manifest v2 instead of oci image###
           provenance: false
@@ -119,7 +119,7 @@ jobs:
         uses: actions/attest-build-provenance@v3
         with:
           #subject-name: oci://${{vars.JF_REGISTRY}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
-          subject-name: ${{vars.JF_REGISTRY}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
+          subject-name: ${{vars.JF_REGISTRY}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}/test1/test2
           #Attempt with subdomain
           #subject-name: oci://${{vars.JF_REGISTRY}}/${{env.IMAGE_NAME}}
           #subject-name: ${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
