@@ -119,7 +119,7 @@ jobs:
         uses: actions/attest-build-provenance@v3
         with:
           #subject-name: oci://${{vars.JF_REGISTRY}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
-          subject-name: ${{vars.JF_REGISTRY}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
+          subject-name: ${{vars.JF_REGISTRY}}/${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}/test1
           #Attempt with subdomain
           #subject-name: oci://${{vars.JF_REGISTRY}}/${{env.IMAGE_NAME}}
           #subject-name: ${{vars.JF_DOCKER_REPO}}/${{env.IMAGE_NAME}}
